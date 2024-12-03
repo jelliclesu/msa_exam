@@ -1,0 +1,25 @@
+services:
+  redis-stack:
+    image: redis/redis-stack
+    container_name: redis-stack-compose
+    restart: always
+    environment:
+      REDIS_ARGS: "--requirepass systempass"
+    ports:
+      - 6379:6379
+      - 8001:8001
+    networks:
+      - app-network
+  zipkin:
+    image: openzipkin/zipkin:2.24.0
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      - STORAGE_TYPE=mem
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
